@@ -234,6 +234,7 @@ function wp_mail( $to, $subject, $message, $headers = '', $attachments = array()
 	 *                    subject, message, headers, and attachments values.
 	 */
 	$atts = apply_filters( 'wp_mail', compact( 'to', 'subject', 'message', 'headers', 'attachments' ) );
+
 	if ( isset( $atts['to'] ) ) {
 		$to = $atts['to'];
 	}
