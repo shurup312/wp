@@ -107,7 +107,7 @@ class SS_MailOptionsInit {
 	 */
 	private function getMailHooks () {
 		$mails = new SS_MailOptions_Options();
-		return $mails->getAllActive();
+		return $mails->getAllActiveNotEmpty();
 	}
 
 	/**
@@ -117,7 +117,7 @@ class SS_MailOptionsInit {
 	private function registerMailHooksFromList ($hooks) {
 		$callback = new SS_MailOptions_Callback();
 		foreach($hooks as $item) {
-			add_filter($item['alias'], array($callback, $item['alias']));
+			add_filter($item['alias'], array($callback, $item['alias']), 11);
 		}
 		$callback->setParams($hooks);
 	}
@@ -165,11 +165,16 @@ class SS_MailOptions_Callback {
 	public function comment_moderation_text () {
 		return $this->params['comment_moderation_text'];
 	}
+
 	/**
+	 * @param string $message Текст сообщения
 	 * @return string
 	 */
-	public function retrieve_password_message () {
-		return $this->params['retrieve_password_message'];
+	public function retrieve_password_message ($message) {
+		/**
+		 * TODO: позможно тут сделать шорткоды
+		 */
+		return $message.'<br />'.$this->params['retrieve_password_message'];
 	}
 	/**
 	 * @return string
@@ -178,7 +183,166 @@ class SS_MailOptions_Callback {
 		return $this->params['retrieve_password_title'];
 	}
 
+	/**
+	 * @return array
+	 */
+	public function woocommerce_email_style_inline_h1_tag () {
+		$mail = new SS_MailOptions_AllWcMails();
+		return $mail->parseH1Styles($this->params['woocommerce_email_style_inline_h1_tag']);
+	}
+	/**
+	 * @return array
+	 */
+	public function woocommerce_email_style_inline_h2_tag () {
+		$mail = new SS_MailOptions_AllWcMails();
+		return $mail->parseH2Styles($this->params['woocommerce_email_style_inline_h2_tag']);
+	}
+	/**
+	 * @return array
+	 */
+	public function woocommerce_email_style_inline_h3_tag () {
+		$mail = new SS_MailOptions_AllWcMails();
+		return $mail->parseH3Styles($this->params['woocommerce_email_style_inline_h3_tag']);
+	}
+	/**
+	 * @return array
+	 */
+	public function woocommerce_email_style_inline_a_tag () {
+		$mail = new SS_MailOptions_AllWcMails();
+		return $mail->parseAStyles($this->params['woocommerce_email_style_inline_a_tag']);
+	}
+	/**
+	 * @return array
+	 */
+	public function woocommerce_email_style_inline_img_tag () {
+		$mail = new SS_MailOptions_AllWcMails();
+		return $mail->parseImgStyles($this->params['woocommerce_email_style_inline_img_tag']);
+	}
 
+	/**
+	 * @return string
+	 */
+	public function woocommerce_email_subject_customer_reset_password () {
+		return $this->params['woocommerce_email_subject_customer_reset_password'];
+	}
+	/**
+	 * @return array
+	 */
+	public function woocommerce_email_style_inline_tags () {
+		$mail = new SS_MailOptions_AllWcMails();
+		return $mail->parseTags($this->params['woocommerce_email_style_inline_tags']);
+	}
+	/**
+	 * @return array
+	 */
+	public function woocommerce_email_heading_customer_reset_password () {
+		return $this->params['woocommerce_email_heading_customer_reset_password'];
+	}
+
+	/**
+	 * @return string
+	 */
+	public function wp_mail_from (){
+		return $this->params['wp_mail_from'];
+	}
+
+	/**
+	 * @return string
+	 */
+	public function wp_mail_from_name (){
+		return $this->params['wp_mail_from_name'];
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function woocommerce_email_enabled_customer_reset_password () {
+		return $this->params['woocommerce_email_enabled_customer_reset_password'];
+	}
+}
+
+/**
+ * Класс для обработки хука по отроавке всех писем из Wc
+ * Class SS_MailOptions_AllWcMails
+ */
+class SS_MailOptions_AllWcMails {
+
+	/**
+	 * Парсинг стилей из строки в массив для H1 тэга
+	 * @param string $css
+	 * @return array
+	 */
+	public function parseH1Styles ($css) {
+		return $this->parseStyles($css);
+	}
+	/**
+	 * Парсинг стилей из строки в массив для H2 тэга
+	 * @param string $css
+	 * @return array
+	 */
+	public function parseH2Styles ($css) {
+		return $this->parseStyles($css);
+	}
+	/**
+	 * Парсинг стилей из строки в массив для H3 тэга
+	 * @param string $css
+	 * @return array
+	 */
+	public function parseH3Styles ($css) {
+		return $this->parseStyles($css);
+	}
+	/**
+	 * Парсинг стилей из строки в массив для A тэга
+	 * @param string $css
+	 * @return array
+	 */
+	public function parseAStyles ($css) {
+		return $this->parseStyles($css);
+	}
+	/**
+	 * Парсинг стилей из строки в массив для IMG тэга
+	 * @param string $css
+	 * @return array
+	 */
+	public function parseImgStyles ($css) {
+		return $this->parseStyles($css);
+	}
+	/**
+	 * Парсинг стилей из строки в массив
+	 * @param string $css
+	 * @return array
+	 */
+	private function parseStyles ($css) {
+		$result = array();
+		$css = explode(';', $css);
+		if(!is_array($css)) {
+			return $result;
+		}
+		foreach($css as $item) {
+			$item = explode(':', $item);
+			if(!is_array($item)) {
+				continue;
+			}
+			$result[$item[0]] = $item[1];
+		}
+		return $result;
+	}
+
+	/**
+	 * @param string $tags
+	 * @return array
+	 */
+	public function parseTags ($tags) {
+		$result = array();
+		$tags = explode(',', $tags);
+		if(!is_array($tags)) {
+			return $result;
+		}
+		foreach($tags as $item) {
+			$result[] = trim($item);
+		}
+		return $result;
+	}
 }
 
 /**
@@ -380,6 +544,7 @@ class SS_MailOptions_Options extends SS_MailsOptions_DB {
 					`name` VARCHAR(64) NOT NULL DEFAULT "",
 					`value` VARCHAR(64) NOT NULL DEFAULT "",
 					`is_active` TINYINT(4) NOT NULL DEFAULT "1",
+					`comment` VARCHAR(128) NOT NULL DEFAULT "1",
 					PRIMARY KEY (`mail_id`, `alias`)
 				)
 				COLLATE="utf8_general_ci"
@@ -413,8 +578,8 @@ abstract class SS_MailsOptions_DB {
 	 * Получение всех записей
 	 * @return array|null
 	 */
-	public function getAllActive () {
-		$sql = 'SELECT * FROM '.$this->tableName().' WHERE is_active = 1';
+	public function getAllActiveNotEmpty () {
+		$sql = 'SELECT * FROM '.$this->tableName().' WHERE is_active = 1 AND value!=""';
 		return $this->getDB()->get_results($sql, ARRAY_A);
 	}
 
