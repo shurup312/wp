@@ -1,12 +1,9 @@
 <?php
 /*
-Plugin Name: Тестовый плагин
-Plugin URI: http://wp
-Description: Текст описания плагина, епте, практикуемся.
+Plugin Name: Плагин для изменения настроек почты
+Description: Плагин для изменения настроек почты. Поозволяет редактировать параметры почты для WP писем и для WooCommerce писем.
 Version: 0.1
 Author: shurup
-Author URI: http://wp
-License: EPL
 */
 
 if (!defined('ABSPATH')) {

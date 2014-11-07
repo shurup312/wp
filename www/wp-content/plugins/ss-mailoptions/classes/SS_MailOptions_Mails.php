@@ -36,10 +36,47 @@ class SS_MailOptions_Mails extends SS_MailOptions_DB {
 		}
 	}
 
+	/**
+	 * Дроп таблицы, если она существует.
+	 * @throws SS_MailerException
+	 */
 	public function dropTableIfExists () {
 		$sql = 'DROP TABLE IF EXISTS `'.$this->tableName().'`';
 		if (!$this->getDB()->query($sql)) {
 			throw new SS_MailerException('Не удалось удалить таблицу `'.$this->tableName().'` при удалении плагина');
 		}
+	}
+
+	/**
+	 * Получение всех записей
+	 * @return array|null
+	 */
+	public function getAllWithOptions () {
+		$result = array();
+		$mailID = array();
+		$optionClass = new SS_MailOptions_Options();
+		$sql = 'SELECT *
+				FROM '.$this->tableName();
+		$mails = $this->getDB()->get_results($sql, ARRAY_A);
+		if(!$mails) {
+			return array();
+		}
+		foreach($mails as $item) {
+			$mailID[] = $item['id'];
+			$result[$item['id']] = $item;
+		}
+		$sql = 'SELECT *
+				FROM '.$optionClass->tableName().'
+				WHERE mail_id IN ('.implode(',', $mailID).') AND is_active=1';
+		$options = $this->getDB()->get_results($sql, ARRAY_A);
+		foreach($options as $item) {
+			$result[$item['mail_id']]['options'][$item['type']][] = $item;
+		}
+		foreach($result as $key=>$item) {
+			if(empty($item['options'])) {
+				unset($result[$key]);
+			}
+		}
+		return $result;
 	}
 }

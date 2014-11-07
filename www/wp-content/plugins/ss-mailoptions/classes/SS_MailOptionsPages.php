@@ -6,6 +6,7 @@
  * Time: 20:45
  */
 namespace SS_Mailoptions;
+
 /**
  * Класс для работа со страницами
  * Class SS_MailOptionsPages
@@ -14,7 +15,7 @@ namespace SS_Mailoptions;
  */
 class SS_MailOptionsPages {
 
-	private $menuID = 'mailer_menu';
+	private $menuID = 'manage_options';
 	private $templateFolder;
 
 	/**
@@ -53,7 +54,9 @@ class SS_MailOptionsPages {
 	 * Страница плагина со списком сообщений
 	 */
 	public function actionIndex () {
-		$this->renderPage('index');
+		$mails     = new SS_MailOptions_Mails();
+		$mailsList = $mails->getAllWithOptions();
+		$this->renderPage('index', array ('mailsList' => $mailsList));
 	}
 
 	/**

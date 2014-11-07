@@ -17,14 +17,6 @@ abstract class SS_MailOptions_DB {
 		global $wpdb;
 		return $wpdb;
 	}
-	/**
-	 * Получение всех записей
-	 * @return array|null
-	 */
-	public function getAllActiveNotEmpty () {
-		$sql = 'SELECT * FROM '.$this->tableName().' WHERE is_active = 1 AND value!=""';
-		return $this->getDB()->get_results($sql, ARRAY_A);
-	}
 
 	/**
 	 * Получеине имени таблицы

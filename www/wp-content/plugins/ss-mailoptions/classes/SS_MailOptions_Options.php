@@ -22,6 +22,7 @@ class SS_MailOptions_Options extends SS_MailOptions_DB {
 		$sql = 'CREATE TABLE IF NOT EXISTS `'.$this->tableName().'` (
 					`mail_id` INT(11) NOT NULL DEFAULT "0",
 					`alias` VARCHAR(64) NOT NULL DEFAULT "",
+					`type` INT(11) NOT NULL DEFAULT "0",
 					`name` VARCHAR(64) NOT NULL DEFAULT "",
 					`value` VARCHAR(64) NOT NULL DEFAULT "",
 					`is_active` TINYINT(4) NOT NULL DEFAULT "1",
@@ -36,10 +37,23 @@ class SS_MailOptions_Options extends SS_MailOptions_DB {
 		}
 	}
 
+	/**
+	 * Дроп таблицы, если она существует.
+	 * @throws SS_MailerException
+	 */
 	public function dropTableIfExists () {
 		$sql = 'DROP TABLE IF EXISTS `'.$this->tableName().'`';
 		if (!$this->getDB()->query($sql)) {
 			throw new SS_MailerException('Не удалось удалить таблицу `'.$this->tableName().'` при удалении плагина');
 		}
+	}
+
+	/**
+	 * Получение всех записей
+	 * @return array|null
+	 */
+	public function getAllActiveNotEmpty () {
+		$sql = 'SELECT * FROM '.$this->tableName().' WHERE is_active = 1 AND value!=""';
+		return $this->getDB()->get_results($sql, ARRAY_A);
 	}
 }

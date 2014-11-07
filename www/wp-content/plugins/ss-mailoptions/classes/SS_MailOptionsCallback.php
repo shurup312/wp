@@ -137,9 +137,33 @@ class SS_MailOptionsCallback {
 	}
 
 	/**
-	 * @return mixed
+	 * @return string
 	 */
 	public function woocommerce_email_enabled_customer_reset_password () {
 		return $this->params['woocommerce_email_enabled_customer_reset_password'];
+	}
+	/**
+	 * @return string
+	 */
+	public function woocommerce_email_enabled_new_order () {
+		return $this->params['woocommerce_email_enabled_new_order'];
+	}
+	/**
+	 * @return string
+	 */
+	public function woocommerce_email_recipient_new_order () {
+		return $this->params['woocommerce_email_recipient_new_order'];
+	}
+	/**
+	 * @return string
+	 */
+	public function woocommerce_email_heading_new_order () {
+		return $this->params['woocommerce_email_heading_new_order'];
+	}
+	/**
+	 * @return string
+	 */
+	public function woocommerce_email_subject_new_order () {
+		return $this->params['woocommerce_email_subject_new_order'];
 	}
 }
