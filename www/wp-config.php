@@ -42,17 +42,14 @@ define('DB_COLLATE', '');
  *
  * @since 2.6.0
  */
-define('AUTH_KEY',         '[rzCC#i(PgR|*Zp.eUt!dComfb4Imf=Zv~nx?_140rc9okJjqjuOt8JJ@K$!uwQ`');
-define('SECURE_AUTH_KEY',  'E|J]I[OYrGYM5q-QHEE_6`{Zi?U4W>AOFX!S]-N, HKX+>@7jPW}I$m##-iH8{{f');
-define('LOGGED_IN_KEY',    ']=_r3(IbLTP>k;Mhr4p74 6SCcG[ZlJ7tVCg-dBWx#c+7-Z]<XwmO1MDLAIQ>*5z');
-define('NONCE_KEY',        '^#Y?Tr*ru(+g.PCJ n& Bm_DXvQ=ce]iF9+Y6@A;KBvQBZ1l7yvl:Pj}Eg%R8|m6');
-define('AUTH_SALT',        'pb>xbf|+r!yA0|G1Ad*QO>C~Qa@8 ga7<?[*TPTZRO7z!Eu <g=?Qx4IAK5@|GB(');
-define('SECURE_AUTH_SALT', '$-Te~sB[DPg8J7bxx/c]VI8(PM1VOxXr1*Cq y;*-BUd]a1rzqmJ|& E``j$E=Y1');
-define('LOGGED_IN_SALT',   ',KEkU| 8[:_>.F]/0XgJf|O? E=k&*gk N3JakTMlr6EzY#+lr8_^Z8@ +$(@FNd');
-define('NONCE_SALT',       '@<Tkc#,7htFk&*f1B.=h+&8jGrihkP$_u.bTE#in[6 H_DHF)SklGrvY+u`I^k|t');
-
-
-define( 'WP_ALLOW_MULTISITE', true );
+define('AUTH_KEY',         'goU}^BOPe2$/#jOr ~&<s`WH6V]2xOK0p5YU#!ju<vMFN].k`xp@.*-%*vG-$pU,');
+define('SECURE_AUTH_KEY',  'aA`Nr|-V.lT&/so?*AVoAgl0-WFGZ_)X`YL( Pf=n~-<wn X*~UxT?#m!j>f`g55');
+define('LOGGED_IN_KEY',    '&A`-^F?A~j|$a+DL_yz3M,QX^H$Bk{Q-mk822R2OCW-eh&c&%-^;Lj,bhzI1We*+');
+define('NONCE_KEY',        'o{[j/7 DuCjoX0[Sb6lW}3HPMo(,i;OXRwtzcjs%-@TZ1W+g`-3rMc5:t%tj|Z|~');
+define('AUTH_SALT',        'T$7COERHe_TEo>1.)]-q]Df+-<G +|%#ja>#;Mmcy5[U}1N7T5 5:Z,6:DpRWwIi');
+define('SECURE_AUTH_SALT', '^|[+.khKYi i3-(O[oMX6KFbI2UM^>FjM|#*`iz/gJK`S>W?_8B{CpGj|>Zzk[]o');
+define('LOGGED_IN_SALT',   '&Rvvqx%gGS410.lk|R.0VYx?og={^R-!0Cv2t}F-?D.L~w=W-p.*YCE.QokETe@1');
+define('NONCE_SALT',       'm?HmfumTv5$-6wAhs|~xeG?}Q@#^0U9+U+Cm7[-C]o^qJ:J6JFd83Jxx,mFHJ9MW');
 
 /**#@-*/
 
@@ -71,20 +68,7 @@ $table_prefix  = 'wp_';
  * Настоятельно рекомендуется, чтобы разработчики плагинов и тем использовали WP_DEBUG
  * в своём рабочем окружении.
  */
-
-// Включаем логгирование
-define('WP_DEBUG', true);
-// Лог будет храниться в файле /wp-content/debug.log
-define('WP_DEBUG_LOG', true);
-// Отключаем вывод ошибок на экран
-define('WP_DEBUG_DISPLAY', true);
-
-define('MULTISITE', true);
-define('SUBDOMAIN_INSTALL', true);
-define('DOMAIN_CURRENT_SITE', 'wp');
-define('PATH_CURRENT_SITE', '/');
-define('SITE_ID_CURRENT_SITE', 1);
-define('BLOG_ID_CURRENT_SITE', 1);
+define('WP_DEBUG', false);
 
 /* Это всё, дальше не редактируем. Успехов! */
 
