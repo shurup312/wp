@@ -15,6 +15,7 @@ namespace SS_Mailoptions;
  */
 class SS_MailOptionsPages {
 
+	const JSON_FORMAT = 'json';
 	private $menuID = 'manage_options';
 	private $templateFolder;
 
@@ -33,6 +34,7 @@ class SS_MailOptionsPages {
 		if (!is_admin()) {
 			return true;
 		}
+		add_action( 'wp_ajax_ssma_save', array($this, 'actionAjaxSave') );
 		add_action(
 			'admin_menu',
 			function () {
@@ -48,8 +50,31 @@ class SS_MailOptionsPages {
 				);
 			}
 		);
+		return true;
 	}
 
+	/**
+	 * Метод обработки запроса на сохренение
+	 */
+	public function actionAjaxSave () {
+		$errors = array();
+		$request = $this->getRawRequest();
+		$options = new SS_MailOptions_Options();
+		$changedOptionsList = $this->getOnlyChangedOptions($request);
+		foreach($changedOptionsList as $item) {
+			if(!$options->saveValueByAlias($item)) {
+				$errors[$item['alias']] = array(
+					'name' => $item['name'],
+				);
+			}
+		}
+		$response = array(
+			'ok' => (int)empty($errors),
+			'error' => $errors,
+		);
+		$this->jsonResponse($response);
+		exit();
+	}
 	/**
 	 * Страница плагина со списком сообщений
 	 */
@@ -80,16 +105,56 @@ class SS_MailOptionsPages {
 	}
 
 	/**
+	 * Получение сырых данных (так отправляет ангуляр) и раскодирование
+	 * @param string $type
+	 * @return array|string
+	 */
+	public function getRawRequest ($type = self::JSON_FORMAT) {
+		$content = trim(file_get_contents('php://input'));
+		if($type == self::JSON_FORMAT){
+			$content = json_decode($content, true);
+		}
+		return $content;
+
+	}
+
+	/**
 	 * Функция получения имени файла шаблона
 	 * @param $name
 	 * @throws SS_MailerException
 	 * @return string
 	 */
-	private function getTemplateFilename ($name) {
+	protected function getTemplateFilename ($name) {
 		$templateAddress = $this->templateFolder.$name.'.php';
 		if (!file_exists($templateAddress)) {
 			throw new SS_MailerException('Не удалось найти файл шаблона.'.$templateAddress);
 		}
 		return $templateAddress;
+	}
+
+	/**
+	 * @param array $optionsArray
+	 * @return array
+	 */
+	protected function getOnlyChangedOptions ($optionsArray) {
+		$result = array();
+		foreach($optionsArray as $mail) {
+			foreach($mail['options'] as $type) {
+				foreach($type as $option) {
+					if(isset($option['isChanged'])) {
+						$result[] = $option;
+					}
+				}
+			}
+		}
+		return $result;
+	}
+
+	/**
+	 * Отчаса на вывод присланных данных json форматом.
+	 * @param $response
+	 */
+	protected function jsonResponse ($response) {
+		echo json_encode($response);
 	}
 }

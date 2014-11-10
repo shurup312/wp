@@ -50,14 +50,13 @@ class SS_MailOptionsCallback {
 	}
 
 	/**
-	 * @param string $message Текст сообщения
 	 * @return string
 	 */
-	public function retrieve_password_message ($message) {
+	public function retrieve_password_message () {
 		/**
 		 * TODO: позможно тут сделать шорткоды
 		 */
-		return $message.'<br />'.$this->params['retrieve_password_message'];
+		return $this->params['retrieve_password_message'];
 	}
 	/**
 	 * @return string
@@ -109,14 +108,14 @@ class SS_MailOptionsCallback {
 		return $this->params['woocommerce_email_subject_customer_reset_password'];
 	}
 	/**
-	 * @return array
+	 * @return string
 	 */
 	public function woocommerce_email_style_inline_tags () {
 		$mail = new SS_MailOptionsAllWcMails();
 		return $mail->parseTags($this->params['woocommerce_email_style_inline_tags']);
 	}
 	/**
-	 * @return array
+	 * @return string
 	 */
 	public function woocommerce_email_heading_customer_reset_password () {
 		return $this->params['woocommerce_email_heading_customer_reset_password'];
@@ -166,4 +165,152 @@ class SS_MailOptionsCallback {
 	public function woocommerce_email_subject_new_order () {
 		return $this->params['woocommerce_email_subject_new_order'];
 	}
+	/**
+	 * @return string
+	 */
+	public function woocommerce_email_enabled_customer_processing_order () {
+		return $this->params['woocommerce_email_enabled_customer_processing_order'];
+	}
+	/**
+	 * @return string
+	 */
+	public function woocommerce_email_recipient_customer_processing_order () {
+		return $this->params['woocommerce_email_recipient_customer_processing_order'];
+	}
+	/**
+	 * @return string
+	 */
+	public function woocommerce_email_heading_customer_processing_order () {
+		return $this->params['woocommerce_email_heading_customer_processing_order'];
+	}
+	/**
+	 * @return string
+	 */
+	public function woocommerce_email_subject_customer_processing_order () {
+		return $this->params['woocommerce_email_subject_customer_processing_order'];
+	}
+	/**
+	 * @return string
+	 */
+	public function woocommerce_email_enabled_customer_completed_order () {
+		return $this->params['woocommerce_email_enabled_customer_completed_order'];
+	}
+	/**
+	 * @return string
+	 */
+	public function woocommerce_email_recipient_customer_completed_order () {
+		return $this->params['woocommerce_email_recipient_customer_completed_order'];
+	}
+	/**
+	 * @return string
+	 */
+	public function woocommerce_email_heading_customer_completed_order () {
+		return $this->params['woocommerce_email_heading_customer_completed_order'];
+	}
+	/**
+	 * @return string
+	 */
+	public function woocommerce_email_subject_customer_completed_order () {
+		return $this->params['woocommerce_email_subject_customer_completed_order'];
+	}
+	/**
+	 * @return string
+	 */
+	public function woocommerce_email_enabled_customer_invoice () {
+		return $this->params['woocommerce_email_enabled_customer_invoice'];
+	}
+	/**
+	 * @return string
+	 */
+	public function woocommerce_email_recipient_customer_invoice () {
+		return $this->params['woocommerce_email_recipient_customer_invoice'];
+	}
+	/**
+	 * @return string
+	 */
+	public function woocommerce_email_heading_customer_invoice () {
+		return $this->params['woocommerce_email_heading_customer_invoice'];
+	}
+	/**
+	 * @return string
+	 */
+	public function woocommerce_email_subject_customer_invoice () {
+		return $this->params['woocommerce_email_subject_customer_invoice'];
+	}
+	/**
+	 * @return string
+	 */
+	public function woocommerce_email_enabled_customer_new_account () {
+		return $this->params['woocommerce_email_enabled_customer_new_account'];
+	}
+	/**
+	 * @return string
+	 */
+	public function woocommerce_email_recipient_customer_new_account () {
+		return $this->params['woocommerce_email_recipient_customer_new_account'];
+	}
+	/**
+	 * @return string
+	 */
+	public function woocommerce_email_heading_customer_new_account () {
+		return $this->params['woocommerce_email_heading_customer_new_account'];
+	}
+	/**
+	 * @return string
+	 */
+	public function woocommerce_email_subject_customer_new_account () {
+		return $this->params['woocommerce_email_subject_customer_new_account'];
+	}	
+	
+	/**
+	 * @return string
+	 */
+	public function user_registration_email () {
+		return $this->params['user_registration_email'];
+	}
+
+	/**
+	 * @return string
+	 */
+	public function woocommerce_new_order_note_data () {
+		return $this->params['woocommerce_new_order_note_data'];
+	}
+	/**
+	 * @return string
+	 */
+	public function woocommerce_email_enabled_customer_note () {
+		return $this->params['woocommerce_email_enabled_customer_note'];
+	}
+	/**
+	 * @return string
+	 */
+	public function woocommerce_email_recipient_customer_note () {
+		return $this->params['woocommerce_email_recipient_customer_note'];
+	}
+	/**
+	 * @return string
+	 */
+	public function woocommerce_email_heading_customer_note () {
+		return $this->params['woocommerce_email_heading_customer_note'];
+	}
+	/**
+	 * @return string
+	 */
+	public function woocommerce_email_subject_customer_note () {
+		return $this->params['woocommerce_email_subject_customer_note'];
+	}
+
+	/**
+	 * @return string
+	 */
+	public function woocommerce_email_subject_customer_invoice_paid () {
+		return $this->params['woocommerce_email_subject_customer_invoice_paid'];
+	}
+	/**
+	 * @return string
+	 */
+	public function woocommerce_email_heading_customer_invoice_paid () {
+		return $this->params['woocommerce_email_heading_customer_invoice_paid'];
+	}
+
 }

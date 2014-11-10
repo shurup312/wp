@@ -39,11 +39,13 @@ class SS_MailOptionsInstaller{
 	private function createMailsTable () {
 		$mails = new SS_MailOptions_Mails();
 		$mails->createTableIfNotExists();
+		$mails->insertDataForActivate();
 	}
 
 	private function createOptionsTable () {
 		$options = new SS_MailOptions_Options();
 		$options->createTableIfNotExists();
+		$options->insertDataForActivate();
 	}
 
 	private function dropMailsTable () {
