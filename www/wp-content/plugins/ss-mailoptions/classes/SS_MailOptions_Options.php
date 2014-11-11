@@ -10,12 +10,31 @@ namespace SS_Mailoptions;
  * Class SS_MailOptions_Options
  */
 class SS_MailOptions_Options extends SS_MailOptions_DB {
+
+	private static $_instance;
+
+	private function __construct() {}
+
+	private function __clone() {}
+
+	private function __wakeup() {}
+
+	/**
+	 * get instance
+	 * @return SS_MailOptions_Options
+	 */
+	public static function i () {
+		if(!self::$_instance) {
+			self::$_instance = new self;
+		}
+		return self::$_instance;
+	}
 	/**
 	 * Получеине имени таблицы
 	 * @return string
 	 */
 	public function tableName () {
-		return $this->getDB()->prefix.'mailoptions_options';
+		return $this->getPrefix().'mailoptions_options';
 	}
 
 	/**
@@ -44,7 +63,7 @@ class SS_MailOptions_Options extends SS_MailOptions_DB {
 	 * Запись данных в таблицу пи активации
 	 */
 	public function insertDataForActivate () {
-		$sql = "INSERT INTO `wp_mailoptions_options` (`mail_id`, `alias`, `type`, `name`, `value`, `is_active`, `comment`) VALUES
+		$sql = "INSERT INTO `".$this->tableName()."` (`mail_id`, `alias`, `type`, `name`, `value`, `is_active`, `comment`) VALUES
 					(1, 'retrieve_password_message', 0, 'Текст письма', '', 0, 'Текст письма для восстановления пароля'),
 					(1, 'retrieve_password_title', 0, 'Заголовок письма', '', 0, 'Заголовок письма для восстановления пароли'),
 					(2, 'comment_moderation_headers', 0, 'Заголовки кода письма', '', 0, NULL),
@@ -133,5 +152,14 @@ class SS_MailOptions_Options extends SS_MailOptions_DB {
 			return false;
 		}
 		return true;
+	}
+
+	/**
+	 * Проверка на существование таблицы
+	 * @return mixed
+	 */
+	public function existsTable () {
+		$sql = 'SHOW TABLES LIKE "'.$this->tableName().'"';
+		return $this->getDB()->get_results($sql);
 	}
 }

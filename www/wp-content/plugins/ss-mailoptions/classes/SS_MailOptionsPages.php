@@ -16,8 +16,8 @@ namespace SS_Mailoptions;
 class SS_MailOptionsPages {
 
 	const JSON_FORMAT = 'json';
-	private $menuID = 'manage_options';
 	private $templateFolder;
+	private $capability = 'manage_options';
 
 	/**
 	 * Конструктор класса
@@ -30,25 +30,23 @@ class SS_MailOptionsPages {
 	 * Добавление пунков меню для страниц плагина
 	 * @return bool
 	 */
-	public function addMenuItems () {
+	public function addMenuItem () {
 		if (!is_admin()) {
 			return true;
 		}
-		add_action( 'wp_ajax_ssma_save', array($this, 'actionAjaxSave') );
+		add_action(
+			'wp_ajax_ssma_save',
+			array (
+				$this,
+				'actionAjaxSave'
+			)
+		);
 		add_action(
 			'admin_menu',
-			function () {
-				add_menu_page(
-					'Почтовик',
-					'Почтовик',
-					$this->menuID,
-					'mailer/index',
-					array (
-						$this,
-						'actionIndex'
-					)
-				);
-			}
+			array (
+				$this,
+				'addMenuItemAction'
+			)
 		);
 		return true;
 	}
@@ -57,31 +55,34 @@ class SS_MailOptionsPages {
 	 * Метод обработки запроса на сохренение
 	 */
 	public function actionAjaxSave () {
-		$errors = array();
-		$request = $this->getRawRequest();
-		$options = new SS_MailOptions_Options();
+		$errors             = array ();
+		$request            = $this->getRawRequest();
 		$changedOptionsList = $this->getOnlyChangedOptions($request);
 		foreach($changedOptionsList as $item) {
-			if(!$options->saveValueByAlias($item)) {
-				$errors[$item['alias']] = array(
+			if (!SS_MailOptions_Options::i()->saveValueByAlias($item)) {
+				$errors[$item['alias']] = array (
 					'name' => $item['name'],
 				);
 			}
 		}
-		$response = array(
-			'ok' => (int)empty($errors),
+		$response = array (
+			'ok'    => (int)empty($errors),
 			'error' => $errors,
 		);
 		$this->jsonResponse($response);
 		exit();
 	}
+
 	/**
 	 * Страница плагина со списком сообщений
 	 */
 	public function actionIndex () {
-		$mails     = new SS_MailOptions_Mails();
-		$mailsList = $mails->getAllWithOptions();
-		$this->renderPage('index', array ('mailsList' => $mailsList));
+		$mailsList = SS_MailOptions_Mails::i()->getAllWithOptions();
+		$siteURL = site_url();
+		$this->renderPage('index', array (
+			'mailsList' => $mailsList,
+			'siteURL' => $siteURL,
+		));
 	}
 
 	/**
@@ -111,11 +112,10 @@ class SS_MailOptionsPages {
 	 */
 	public function getRawRequest ($type = self::JSON_FORMAT) {
 		$content = trim(file_get_contents('php://input'));
-		if($type == self::JSON_FORMAT){
+		if ($type==self::JSON_FORMAT) {
 			$content = json_decode($content, true);
 		}
 		return $content;
-
 	}
 
 	/**
@@ -137,11 +137,11 @@ class SS_MailOptionsPages {
 	 * @return array
 	 */
 	protected function getOnlyChangedOptions ($optionsArray) {
-		$result = array();
+		$result = array ();
 		foreach($optionsArray as $mail) {
 			foreach($mail['options'] as $type) {
 				foreach($type as $option) {
-					if(isset($option['isChanged'])) {
+					if (isset($option['isChanged'])) {
 						$result[] = $option;
 					}
 				}
@@ -156,5 +156,18 @@ class SS_MailOptionsPages {
 	 */
 	protected function jsonResponse ($response) {
 		echo json_encode($response);
+	}
+
+	public function addMenuItemAction () {
+		add_options_page(
+			'Шаблоны писем',
+			'Шаблоны писем',
+			$this->capability,
+			'mailer',
+			array (
+				$this,
+				'actionIndex'
+			)
+		);
 	}
 }

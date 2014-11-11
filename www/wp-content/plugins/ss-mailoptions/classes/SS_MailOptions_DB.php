@@ -10,6 +10,7 @@ namespace SS_Mailoptions;
  * Class SS_MailsOptions_DB
  */
 abstract class SS_MailOptions_DB {
+	protected $dbPrefix;
 	/**
 	 * @return \wpdb
 	 */
@@ -23,4 +24,21 @@ abstract class SS_MailOptions_DB {
 	 * @return string
 	 */
 	abstract public function tableName ();
+
+	/**
+	 * @return string
+	 */
+	public function getPrefix () {
+		if(!$this->dbPrefix){
+			return $this->getDB()->prefix;
+		}
+		return $this->dbPrefix;
+	}
+
+	/**
+	 * @param $prefix
+	 */
+	public function setPrefix ($prefix) {
+		$this->dbPrefix = $prefix;
+	}
 }

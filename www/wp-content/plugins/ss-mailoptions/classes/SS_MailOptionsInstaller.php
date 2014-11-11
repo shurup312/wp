@@ -17,44 +17,77 @@ class SS_MailOptionsInstaller{
 	 * Действие при активации плагина
 	 */
 	public function activation () {
-		$this->createMailsTable();
-		$this->createOptionsTable();
+		global $wpdb;
+		$sites = wp_get_sites(array(
+			'network_id' => 1,
+			'public'     => null,
+			'archived'   => null,
+			'mature'     => null,
+			'spam'       => null,
+			'deleted'    => 0,
+			'limit'      => 100,
+			'offset'     => 0,
+		));
+		if (!empty($sites)) {
+			foreach ($sites as $site) {
+				SS_MailOptions_Mails::i()->setPrefix($wpdb->get_blog_prefix($site['blog_id']));
+				SS_MailOptions_Options::i()->setPrefix($wpdb->get_blog_prefix($site['blog_id']));
+				$this->createMailsTable();
+				$this->createOptionsTable();
+			}
+		}
+		SS_MailOptions_Mails::i()->setPrefix(null);
+		SS_MailOptions_Options::i()->setPrefix(null);
 	}
 
 	/**
 	 * Действие при деактивации плагина
 	 */
 	public function deactivation () {
-		$this->dropMailsTable();
-		$this->dropOptionsTable();
+		global $wpdb;
+		$sites = wp_get_sites(array(
+			'network_id' => 1,
+			'public'     => null,
+			'archived'   => null,
+			'mature'     => null,
+			'spam'       => null,
+			'deleted'    => 0,
+			'limit'      => 100,
+			'offset'     => 0,
+		));
+		if (!empty($sites)) {
+			foreach ($sites as $site) {
+				SS_MailOptions_Mails::i()->setPrefix($wpdb->get_blog_prefix($site['blog_id']));
+				SS_MailOptions_Options::i()->setPrefix($wpdb->get_blog_prefix($site['blog_id']));
+				$this->dropMailsTable();
+				$this->dropOptionsTable();
+			}
+		}
 	}
 
 	/**
 	 * Действие при удалении плагина
 	 */
-	public function uninstall () {
+	public static function uninstall () {
 
 	}
 
 	private function createMailsTable () {
-		$mails = new SS_MailOptions_Mails();
-		$mails->createTableIfNotExists();
-		$mails->insertDataForActivate();
+		SS_MailOptions_Mails::i()->createTableIfNotExists();
+		SS_MailOptions_Mails::i()->insertDataForActivate();
 	}
 
 	private function createOptionsTable () {
-		$options = new SS_MailOptions_Options();
-		$options->createTableIfNotExists();
-		$options->insertDataForActivate();
+
+		SS_MailOptions_Options::i()->createTableIfNotExists();
+		SS_MailOptions_Options::i()->insertDataForActivate();
 	}
 
 	private function dropMailsTable () {
-		$mails = new SS_MailOptions_Mails();
-		$mails->dropTableIfExists();
+		SS_MailOptions_Mails::i()->dropTableIfExists();
 	}
 
 	private function dropOptionsTable () {
-		$options = new SS_MailOptions_Options();
-		$options->dropTableIfExists();
+		SS_MailOptions_Options::i()->dropTableIfExists();
 	}
 }

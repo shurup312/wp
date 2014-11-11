@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Плагин для изменения настроек почты
-Description: Плагин для изменения настроек почты. Поозволяет редактировать параметры почты для WP писем и для WooCommerce писем.
+Description: Плагин для изменения настроек почты. Позволяет редактировать параметры почты для WP писем и для WooCommerce писем.
 Version: 0.1
 Author: shurup
 */
@@ -29,8 +29,10 @@ spl_autoload_register(function($classname) {
 try {
 	$plugin = new SS_Mailoptions\SS_MailOptionsInit();
 	$plugin->registerInstallHooks();
-	$plugin->registerPages();
-	$plugin->registerMailHooks();
+	if($plugin->isActiveted()){
+		$plugin->registerPages();
+		$plugin->registerMailHooks();
+	}
 } catch(SS_Mailoptions\SS_MailerException $e) {
 	throw new Exception($e->getMessage());
 }

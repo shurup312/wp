@@ -45,7 +45,7 @@ class SS_MailOptionsInit {
 	 * Регистрация пунктов меню.
 	 */
 	public function registerPages () {
-		$this->pages->addMenuItems();
+		$this->pages->addMenuItem();
 	}
 
 	/**
@@ -81,7 +81,7 @@ class SS_MailOptionsInit {
 		register_uninstall_hook(
 			SS_MAILER_PATH,
 			array (
-				$this->installer,
+				'SS_Mailoptions\SS_MailOptionsInstaller',
 				'uninstall'
 			)
 		);
@@ -100,8 +100,8 @@ class SS_MailOptionsInit {
 	 * @return array|null
 	 */
 	private function getMailHooks () {
-		$mails = new SS_MailOptions_Options();
-		return $mails->getAllActiveNotEmpty();
+
+		return SS_MailOptions_Options::i()->getAllActiveNotEmpty();
 	}
 
 	/**
@@ -114,6 +114,14 @@ class SS_MailOptionsInit {
 			add_filter($item['alias'], array($callback, $item['alias']), 11);
 		}
 		$callback->setParams($hooks);
+	}
+
+	/**
+	 *
+	 */
+	public function isActiveted () {
+
+		return SS_MailOptions_Options::i()->existsTable();
 	}
 }
 

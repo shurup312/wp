@@ -18,12 +18,31 @@ class SS_MailOptions_Mails extends SS_MailOptions_DB {
 	const TYPE_CHECKBOX = 1;
 	const TYPE_TEXTAREA = 2;
 
+	private static $_instance;
+
+	private function __construct() {}
+
+	private function __clone() {}
+
+	private function __wakeup() {}
+
+	/**
+	 * get instance
+	 * @return SS_MailOptions_Mails
+	 */
+	public static function i () {
+		if(!self::$_instance) {
+			self::$_instance = new self;
+		}
+		return self::$_instance;
+	}
+
 	/**
 	 * Получеине имени таблицы
 	 * @return string
 	 */
 	public function tableName () {
-		return $this->getDB()->prefix.'mailoptions_mails';
+		return $this->getPrefix().'mailoptions_mails';
 	}
 
 	/**
@@ -48,7 +67,7 @@ class SS_MailOptions_Mails extends SS_MailOptions_DB {
 	 * Запись данных в таблицу пи активации
 	 */
 	public function insertDataForActivate () {
-		$sql = 'INSERT INTO `wp_mailoptions_mails` (`id`, `name`, `sender_id`) VALUES 	
+		$sql = 'INSERT INTO `'.$this->tableName().'` (`id`, `name`, `sender_id`) VALUES
 					(1, "Повторная отправка пароля", 1),
 					(2, "Модерация комментария", 1),
 					(3, "Все письма WooCommerce", 2),
@@ -82,7 +101,6 @@ class SS_MailOptions_Mails extends SS_MailOptions_DB {
 	public function getAllWithOptions () {
 		$result = array();
 		$mailID = array();
-		$optionClass = new SS_MailOptions_Options();
 		$sql = 'SELECT *
 				FROM '.$this->tableName().'
 				ORDER BY `sender_id`';
@@ -95,7 +113,7 @@ class SS_MailOptions_Mails extends SS_MailOptions_DB {
 			$result[$item['id']] = $item;
 		}
 		$sql = 'SELECT *
-				FROM '.$optionClass->tableName().'
+				FROM '.SS_MailOptions_Options::i()->tableName().'
 				WHERE mail_id IN ('.implode(',', $mailID).') AND is_active=1';
 		$options = $this->getDB()->get_results($sql, ARRAY_A);
 		foreach($options as $item) {

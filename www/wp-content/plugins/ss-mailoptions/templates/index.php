@@ -8,6 +8,7 @@
 
 /**
  * @var array $mailsList
+ * @var string $siteURL
  */
 ?>
 <link rel="stylesheet" href="/wp-content/plugins/ss-mailoptions/vendor/bower/bootstrap/dist/css/bootstrap.css"/>
@@ -131,7 +132,7 @@
 				saveRequest: function () {
 					$scope.model.isSaved = false;
 					$scope.model.errorsList = false;
-					$http.post('/wp-admin/admin-ajax.php?action=ssma_save', $scope.model.mailsList).success(function (response) {
+					$http.post('<?=$siteURL;?>/wp-admin/admin-ajax.php?action=ssma_save', $scope.model.mailsList).success(function (response) {
 						$scope.model.saveResponse(response)
 					});
 				},

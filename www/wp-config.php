@@ -51,6 +51,16 @@ define('SECURE_AUTH_SALT', '^|[+.khKYi i3-(O[oMX6KFbI2UM^>FjM|#*`iz/gJK`S>W?_8B{
 define('LOGGED_IN_SALT',   '&Rvvqx%gGS410.lk|R.0VYx?og={^R-!0Cv2t}F-?D.L~w=W-p.*YCE.QokETe@1');
 define('NONCE_SALT',       'm?HmfumTv5$-6wAhs|~xeG?}Q@#^0U9+U+Cm7[-C]o^qJ:J6JFd83Jxx,mFHJ9MW');
 
+
+// Включаем логгирование
+define('WP_DEBUG', true);
+// Лог будет храниться в файле /wp-content/debug.log
+define('WP_DEBUG_LOG', true);
+// Отключаем вывод ошибок на экран
+define('WP_DEBUG_DISPLAY', false);
+
+define('WP_ALLOW_MULTISITE', true);
+
 /**#@-*/
 
 /**
@@ -60,7 +70,12 @@ define('NONCE_SALT',       'm?HmfumTv5$-6wAhs|~xeG?}Q@#^0U9+U+Cm7[-C]o^qJ:J6JFd8
  * разные префиксы. Пожалуйста, указывайте только цифры, буквы и знак подчеркивания.
  */
 $table_prefix  = 'wp_';
-
+define('MULTISITE', true);
+define('SUBDOMAIN_INSTALL', false);
+define('DOMAIN_CURRENT_SITE', 'wp');
+define('PATH_CURRENT_SITE', '/');
+define('SITE_ID_CURRENT_SITE', 1);
+define('BLOG_ID_CURRENT_SITE', 1);
 /**
  * Для разработчиков: Режим отладки WordPress.
  *
@@ -68,7 +83,6 @@ $table_prefix  = 'wp_';
  * Настоятельно рекомендуется, чтобы разработчики плагинов и тем использовали WP_DEBUG
  * в своём рабочем окружении.
  */
-define('WP_DEBUG', false);
 
 /* Это всё, дальше не редактируем. Успехов! */
 
